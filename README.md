@@ -71,3 +71,9 @@ Without these fields, the server cannot connect to the database or authenticate 
 
 6. Start the server:
    npm start
+
+Frontend
+
+This backend is designed to work with the frontend portion of the Task Controller App, which provides the user interface and functionality for managing tasks. The frontend repository contains all the React.js code for the application.
+
+[Backend Repository Link](https://github.com/jorgeromero5055/task-controller-frontend)
