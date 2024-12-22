@@ -31,7 +31,11 @@ const createTestServer = async () => {
   const uri = mongoServer.getUri();
   await mongoose.connect(uri);
 
-  return { app, mongoServer };
+  return {
+    app,
+
+    mongoServer,
+  };
 };
 
 module.exports = createTestServer;

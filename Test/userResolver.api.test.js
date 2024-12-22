@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const request = require("supertest");
 const uniqueID = `user1 ${new Date().toISOString()}`;
 
@@ -13,17 +14,18 @@ const createTestServer = require("./setupTestServer");
 
 let app, mongoServer;
 
-beforeAll(async () => {
-  const serverSetup = await createTestServer();
-  app = serverSetup.app;
-  mongoServer = serverSetup.mongoServer;
-});
-
-afterAll(async () => {
-  await mongoServer.stop();
-});
-
 describe("User Resolver Test", () => {
+  beforeAll(async () => {
+    const serverSetup = await createTestServer();
+    app = serverSetup.app;
+    mongoServer = serverSetup.mongoServer;
+  });
+
+  afterAll(async () => {
+    await mongoose.disconnect();
+    await mongoServer.stop();
+  });
+
   it("should query active user successfully", async () => {
     const mutation = `
       query {

@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const request = require("supertest");
 const uniqueID = `user1 ${new Date().toISOString()}`;
 
@@ -20,6 +21,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await mongoose.disconnect();
   await mongoServer.stop();
 });
 
@@ -47,11 +49,6 @@ describe("Task Resolver Test", () => {
       .post("/graphql")
       .set("Authorization", `Bearer ${uniqueID}`)
       .send({ query: mutation });
-
-    console.log(
-      "response.body.data.createTask",
-      response.body.data.createTask.name
-    );
     expect(response.status).toBe(200);
     expect(response.body.data.createTask.name).toBe("Test Task");
     itemId = response.body.data.createTask.id;
@@ -80,7 +77,7 @@ describe("Task Resolver Test", () => {
       .post("/graphql")
       .set("Authorization", `Bearer ${uniqueID}`)
       .send({ query: mutation });
-    console.log("updateTask frfr", itemId, response.body);
+
     expect(response.status).toBe(200);
     expect(response.body.data.updateTask.name).toBe("Test Task 2");
   });

@@ -15,6 +15,7 @@ const mockUser = jest.fn().mockImplementation((data) => ({
 
 // Attach static methods directly to the function
 mockUser.findOneAndUpdate = jest.fn();
+mockUser.findOneAndDelete = jest.fn();
 
 jest.mock("../models/userModel", () => mockUser);
 const User = require("../models/userModel");
@@ -32,7 +33,7 @@ describe("User Resolver", () => {
   });
 
   describe("getTasks mutation", () => {
-    it("Create a new user successfully ", async () => {
+    it("Create a new user successfully", async () => {
       const result = await resolvers.Mutation.createUser(
         null,
         mockUserObject,
@@ -47,7 +48,7 @@ describe("User Resolver", () => {
       expect(result).toEqual("creating user succesful");
     });
 
-    it("Create a new user with faliure ", async () => {
+    it("Create a new user with faliure", async () => {
       mockSave.mockRejectedValueOnce(new Error("Error creating a user"));
       await expect(
         resolvers.Mutation.createUser(null, mockUserObject, mockContext)
@@ -97,7 +98,7 @@ describe("User Resolver", () => {
       );
     });
 
-    it("No user found error ", async () => {
+    it("No user found error", async () => {
       User.findOneAndUpdate.mockResolvedValue(false);
 
       await expect(
