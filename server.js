@@ -14,7 +14,7 @@ const userTypeDefs = require("./typeDefs/userTypeDef");
 const userResolvers = require("./resolvers/userResolver");
 
 const mongodbURI = process.env.MONGODB_URI;
-const PORT = 4000;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8080;
 
 const typeDefs = mergeTypeDefs([taskTypeDefs, userTypeDefs]);
 const resolvers = mergeResolvers([taskResolvers, userResolvers]);
@@ -23,10 +23,12 @@ const app = express();
 
 app.use(cors());
 
+let firebaseCredentials = require(process.env.FIREBASE_CONFIG);
+if (!firebaseCredentials) {
+}
+
 admin.initializeApp({
-  credential: admin.credential.cert(
-    require(process.env.GOOGLE_APPLICATION_CREDENTIALS)
-  ),
+  credential: admin.credential.cert(firebaseCredentials),
 });
 
 const server = new ApolloServer({
@@ -43,12 +45,7 @@ const startServer = async () => {
       .connect(mongodbURI)
       .then(() => console.log("Connected to MongoDB"))
       .catch((err) => console.log("MongoDB connection error: ", err));
-
-    app.listen(PORT, () => {
-      console.log(
-        `Server running on http://192.168.1.153:${PORT}${server.graphqlPath}`
-      );
-    });
+    app.listen(PORT);
   } catch (error) {
     console.error("Server failed to start:", error.message);
     process.exit(1); // Exit the process with an error code
