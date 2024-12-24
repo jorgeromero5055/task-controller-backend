@@ -23,7 +23,7 @@ const app = express();
 
 app.use(cors());
 
-let firebaseCredentials = require(process.env.FIREBASE_CONFIG);
+let firebaseCredentials = process.env.FIREBASE_CONFIG;
 if (!firebaseCredentials) {
 }
 
