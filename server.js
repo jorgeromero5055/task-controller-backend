@@ -24,8 +24,6 @@ const app = express();
 app.use(cors());
 
 let firebaseCredentials = process.env.FIREBASE_CONFIG;
-if (!firebaseCredentials) {
-}
 
 admin.initializeApp({
   credential: admin.credential.cert(firebaseCredentials),
