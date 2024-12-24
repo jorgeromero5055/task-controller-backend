@@ -14,7 +14,7 @@ const userTypeDefs = require("./typeDefs/userTypeDef");
 const userResolvers = require("./resolvers/userResolver");
 
 const mongodbURI = process.env.MONGODB_URI;
-const PORT = process.env.PORT ? parseInt(process.env.PORT) : 8080;
+const PORT = process.env.PORT ? parseInt(process.env.PORT) : 4000;
 
 const typeDefs = mergeTypeDefs([taskTypeDefs, userTypeDefs]);
 const resolvers = mergeResolvers([taskResolvers, userResolvers]);
