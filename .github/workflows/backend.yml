@@ -31,15 +31,6 @@ jobs:
       - name: Run Tests
         run: npm run test-ci
 
-      - name: Check Commit Message
-        id: commit_check
-        run: |
-          if [[ $(git log -1 --pretty=%s) == *"deploy"* ]]; then
-            echo "::set-env name=SHOULD_DEPLOY::true"
-          else
-            echo "::set-env name=SHOULD_DEPLOY::false"
-          fi
-
       - name: Deploy App
-        if: env.SHOULD_DEPLOY == 'true'
+        if: ${{ contains(github.event.head_commit.message, 'deploy') }}
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
