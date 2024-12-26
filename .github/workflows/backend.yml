@@ -31,15 +31,12 @@ jobs:
       - name: Run Tests
         run: npm run test-ci
 
-      - name: Check for "deploy" in commit message
-        id: deploy_check
-        run: |
-          if [[ $(git log -1 --pretty=%s) == *"deploy"* ]]; then
-            echo "::set-output name=should_deploy::true"
-          else
-            echo "::set-output name=should_deploy::false"
-          fi
+      - name: Check Commit Message
+        id: commit_check
+        uses: tj-actions/github-release-action@v4
+        with:
+          commit_message_pattern: '.*deploy.*' 
 
       - name: Deploy App
-        if: steps.deploy_check.outputs.should_deploy == 'true'
-        run:  curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }} 
+        if: steps.commit_check.conclusion == 'success'
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
