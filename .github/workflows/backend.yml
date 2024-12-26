@@ -33,10 +33,13 @@ jobs:
 
       - name: Check Commit Message
         id: commit_check
-        uses: tj-actions/github-release-action@v4
-        with:
-          commit_message_pattern: '.*deploy.*' 
+        run: |
+          if [[ $(git log -1 --pretty=%s) == *"deploy"* ]]; then
+            echo "::set-env name=SHOULD_DEPLOY::true"
+          else
+            echo "::set-env name=SHOULD_DEPLOY::false"
+          fi
 
       - name: Deploy App
-        if: steps.commit_check.conclusion == 'success'
+        if: env.SHOULD_DEPLOY == 'true'
         run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
