@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --watchAll",
+    "test-ci": "jest --ci",
     "dev": "nodemon server.js",
     "start": "node server.js",
     "lint": "eslint ."
