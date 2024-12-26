@@ -1,4 +1,5 @@
 const { ApolloServer } = require("apollo-server-express");
+
 const express = require("express");
 const mongoose = require("mongoose");
 const { mergeTypeDefs, mergeResolvers } = require("@graphql-tools/merge");
@@ -33,6 +34,7 @@ const server = new ApolloServer({
   typeDefs,
   resolvers,
   context,
+  persistedQueries: false,
 });
 
 const startServer = async () => {
