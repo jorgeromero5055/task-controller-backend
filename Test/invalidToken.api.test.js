@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const request = require("supertest");
 const uniqueID = `user1 ${new Date().toISOString()}`;
 
@@ -27,6 +28,7 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
+  await mongoose.disconnect();
   await mongoServer.stop();
 });
 
