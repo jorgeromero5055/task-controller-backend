@@ -35,20 +35,33 @@ This is the backend server for the **Task Controller App**, built using **Expres
 
 ---
 
+## Live Demo
+
+A hosted version of the app is available at the following link:
+
+Note: The app may take up to 30 seconds to respond to a request if it has been inactive for more than 15 minutes. This delay is due to the backend being hosted on Render’s free tier, which incurs a server cold start when inactive for more than 15 minutes.
+
+[Live App Link](https://task-controller-frontend.vercel.app/signup)
+
+---
+
 ## Setup Requirements
 
-To spin up this server locally, you need the following:
+To spin up this app locally, you'll need the following.
 
-1. **A `.env` file** with the following fields:
+1. A Firebase Authentication account to add the following enviornment variables
 
-- **MONGODB_URI**: The URI to connect to your MongoDB instance.
-- **GOOGLE_APPLICATION_CREDENTIALS**: Path to your Firebase service account key file. This file must be added manually and contains the credentials provided by Firebase.
+FIREBASE_CONFIG={ Your Firebase Authentication JSON value }
 
-2. **The `firebaseServiceAccount.json` file**:
+2. Access to a Mongo Database URI to add the following enviornment variable
 
-- This file should be generated from your Firebase project and contain the service account credentials.
+MONGODB_URI={ Your Mongo DB URI }
 
-Without these fields, the server cannot connect to the database or authenticate users.
+3. Set the PORT enviornment variable to 4000 as seen below
+
+PORT="4000"
+
+Without these fields, the app cannot connect to Firebase for authentication.
 
 ---
 
@@ -57,20 +70,18 @@ Without these fields, the server cannot connect to the database or authenticate 
 1. Clone the repository:
    git clone https://github.com/your-repo/task-controller-backend.git
 
-2. Add a .env file to the root of the project with the following:
-   MONGODB_URI=your-mongodb-uri
-   GOOGLE_APPLICATION_CREDENTIALS=./firebaseServiceAccount.json
+2. Add a .env file with the enviornment variables stated in the Setup Requirements above.
 
-3. Add the firebaseServiceAccount.json file to the root of the project.
-
-4. Navigate to the project directory:
+3. Navigate to the project directory:
    cd task-controller-backend
 
-5. Install dependencies:
+4. Install dependencies:
    npm install
 
-6. Start the server:
+5. Start the server:
    npm start
+
+---
 
 ## Frontend
 
