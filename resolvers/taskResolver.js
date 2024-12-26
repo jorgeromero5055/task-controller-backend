@@ -3,6 +3,7 @@ const Task = require("../models/taskModel");
 const resolvers = {
   Query: {
     getTasks: async (_, __, { userId }) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       try {
         const tasks = await Task.find({ userId });
         const currentDate = new Date();
@@ -27,6 +28,7 @@ const resolvers = {
     },
 
     getTask: async (_, { id }, { userId }) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       try {
         const task = await Task.findOne({ _id: id, userId });
         if (!task) {
@@ -54,6 +56,7 @@ const resolvers = {
       { name, description, date, completed, overdue, priority, subtasks },
       { userId }
     ) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       const newTask = new Task({
         userId,
         name,
@@ -78,6 +81,7 @@ const resolvers = {
       { id, name, description, date, completed, overdue, priority, subtasks },
       { userId }
     ) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       try {
         const updatedTask = await Task.findOneAndUpdate(
           { _id: id, userId },
@@ -93,6 +97,7 @@ const resolvers = {
     },
 
     deleteTask: async (_, { id }, { userId }) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       try {
         const deletedItem = await Task.findOneAndDelete({ _id: id, userId });
         return deletedItem;

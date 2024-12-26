@@ -39,16 +39,11 @@ describe("User Resolver Test", () => {
         activeUser
       }
     `;
-
     const response = await request(app)
       .post("/graphql")
       .set("Authorization", `Bearer `)
       .send({ query: mutation });
-
-    expect(response.status).toBe(500);
-    expect(response.body.errors[0].message).toBe(
-      "Context creation failed: Invalid user"
-    );
+    expect(response.body.errors[0].message).toBe("Invalid User");
   });
 
   it("invalid token error", async () => {
@@ -58,16 +53,11 @@ describe("User Resolver Test", () => {
         activeUser
       }
     `;
-
     const response = await request(app)
       .post("/graphql")
       .set("Authorization", `Bearer ${uniqueID}`)
       .send({ query: mutation });
-
-    expect(response.status).toBe(500);
-    expect(response.body.errors[0].message).toBe(
-      "Context creation failed: Invalid user"
-    );
+    expect(response.body.errors[0].message).toBe("Invalid User");
   });
 
   it("expire user error", async () => {
@@ -80,10 +70,6 @@ describe("User Resolver Test", () => {
       .post("/graphql")
       .set("Authorization", `Bearer ${uniqueID}`)
       .send({ query: mutation });
-
-    expect(response.status).toBe(500);
-    expect(response.body.errors[0].message).toBe(
-      "Context creation failed: Invalid user"
-    );
+    expect(response.body.errors[0].message).toBe("Invalid User");
   });
 });

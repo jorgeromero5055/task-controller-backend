@@ -2,11 +2,11 @@ const User = require("./models/userModel");
 const admin = require("firebase-admin");
 
 const context = async ({ req }) => {
-  const token = req.headers.authorization?.split(" ")[1];
-  if (!token) {
-    throw new Error("Invalid user");
-  }
   try {
+    const token = req.headers.authorization?.split(" ")[1];
+    if (!token) {
+      throw new Error("Invalid user");
+    }
     const decodedToken = await admin.auth().verifyIdToken(token);
 
     const user = await User.findOne({ userId: decodedToken.uid });
@@ -26,7 +26,7 @@ const context = async ({ req }) => {
       return { userId: decodedToken.uid };
     }
   } catch (error) {
-    throw new Error("Invalid user");
+    return { userId: "Invalid User" };
   }
 };
 

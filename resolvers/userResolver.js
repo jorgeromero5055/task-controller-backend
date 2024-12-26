@@ -3,13 +3,15 @@ const User = require("../models/userModel");
 
 const userResolver = {
   Query: {
-    activeUser: async () => {
+    activeUser: async (_, __, { userId }) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       return "Valid user";
     },
   },
 
   Mutation: {
     createUser: async (_, { lastActive }, { userId }) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       try {
         const newUser = new User({ userId, lastActive });
         await newUser.save();
@@ -20,6 +22,7 @@ const userResolver = {
     },
 
     updateUser: async (_, { lastActive }, { userId }) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       try {
         const updatedUser = await User.findOneAndUpdate(
           { userId },
@@ -36,6 +39,7 @@ const userResolver = {
     },
 
     deleteUser: async (_, __, { userId }) => {
+      if (userId === "Invalid User") throw new Error("Invalid User");
       try {
         const deletedUser = await User.findOneAndDelete({ userId });
         if (!deletedUser) {

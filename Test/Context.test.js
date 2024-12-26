@@ -40,7 +40,8 @@ describe("Context Validation", () => {
 
   it("No Token Error", async () => {
     req.headers = {};
-    await expect(context({ req })).rejects.toThrow("Invalid user");
+    const result = await context({ req });
+    expect(result.userId).toEqual("Invalid User");
     expect(mockVerifyIdToken).not.toHaveBeenCalled();
     expect(mockFindOne).not.toHaveBeenCalled();
     expect(mockSaveUser).not.toHaveBeenCalled();
@@ -48,7 +49,8 @@ describe("Context Validation", () => {
 
   it("Invalid Token Error", async () => {
     mockVerifyIdToken.mockRejectedValueOnce(new Error("Invalid token"));
-    await expect(context({ req })).rejects.toThrow("Invalid user");
+    const result = await context({ req });
+    expect(result.userId).toEqual("Invalid User");
     expect(mockVerifyIdToken).toHaveBeenCalledWith(mockToken);
     expect(mockFindOne).not.toHaveBeenCalled();
     expect(mockSaveUser).not.toHaveBeenCalled();
@@ -56,7 +58,8 @@ describe("Context Validation", () => {
 
   it("Invalid User Error", async () => {
     mockFindOne.mockRejectedValueOnce(new Error("Invalid user"));
-    await expect(context({ req })).rejects.toThrow("Invalid user");
+    const result = await context({ req });
+    expect(result.userId).toEqual("Invalid User");
     expect(mockVerifyIdToken).toHaveBeenCalledWith(mockToken);
     expect(mockFindOne).toHaveBeenCalledWith({ userId: "12345" });
     expect(mockSaveUser).not.toHaveBeenCalled();
@@ -68,7 +71,8 @@ describe("Context Validation", () => {
       lastActive: new Date(Date.now() - 31 * 24 * 60 * 60 * 1000).toISOString(),
     };
     mockFindOne.mockResolvedValueOnce(overwrittenMockUser);
-    await expect(context({ req })).rejects.toThrow("Invalid user");
+    const result = await context({ req });
+    expect(result.userId).toEqual("Invalid User");
     expect(mockVerifyIdToken).toHaveBeenCalledWith(mockToken);
     expect(mockFindOne).toHaveBeenCalledWith({ userId: "12345" });
     expect(mockSaveUser).not.toHaveBeenCalled();
@@ -76,7 +80,8 @@ describe("Context Validation", () => {
 
   it("Saving user fails", async () => {
     mockSaveUser.mockRejectedValueOnce(new Error("Invalid user"));
-    await expect(context({ req })).rejects.toThrow("Invalid user");
+    const result = await context({ req });
+    expect(result.userId).toEqual("Invalid User");
     expect(mockVerifyIdToken).toHaveBeenCalledWith(mockToken);
     expect(mockFindOne).toHaveBeenCalledWith({ userId: "12345" });
     expect(mockSaveUser).toHaveBeenCalled();
