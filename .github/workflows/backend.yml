@@ -1,5 +1,5 @@
 # .github/workflows/frontend.yml
-name: Frontend CI
+name: Frontend CI/CD
 
 on:
   push:
@@ -30,3 +30,16 @@ jobs:
 
       - name: Run Tests
         run: npm run test-ci
+
+      - name: Check for "deploy" in commit message
+        id: deploy_check
+        run: |
+          if [[ $(git log -1 --pretty=%s) == *"deploy"* ]]; then
+            echo "::set-output name=should_deploy::true"
+          else
+            echo "::set-output name=should_deploy::false"
+          fi
+
+      - name: Deploy App
+        if: steps.deploy_check.outputs.should_deploy == 'true'
+        run:  curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_URL }} 
