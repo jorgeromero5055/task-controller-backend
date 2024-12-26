@@ -61,8 +61,6 @@ MONGODB_URI={ Your Mongo DB URI }
 
 PORT="4000"
 
-Without these fields, the app cannot connect to Firebase for authentication.
-
 ---
 
 ## How to Run Locally
